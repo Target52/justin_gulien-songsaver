@@ -80,9 +80,7 @@ class SongOverview extends Component {
     }
 
     handleChange(event) {
-        let name = event.target.name
-        let value = event.target.value
-
+        const { name, value } = event.target
         this.setState(prevState => ({
             inputSong: { ...prevState.inputSong, [name]: value }
         }))
@@ -92,6 +90,15 @@ class SongOverview extends Component {
         let value = event.currentTarget.getAttribute("value")
         let newId = (this.state.songs.filter(item => item.title === value).map(filteredItem => filteredItem.link)).join()
         this.setState({ embedId: newId })
+    }
+
+    handleClickDelete = (event) => {
+        let value = event.currentTarget.getAttribute("value")
+        let songs = this.state.songs
+        const newData = songs.filter(item => item.title !== value)
+        this.setState({
+            songs: newData
+        })
     }
 
     componentDidMount() {
@@ -145,19 +152,21 @@ class SongOverview extends Component {
                     handleSubmit={this.addSong}
                 />
                 <div className="songBody">
-                    <table style={{ width: "100%" }}>
+                    <table className="table1" style={{ width: "100%" }}>
                         <tbody>
                             <tr className="song-header">
                                 <th className="song-row__item">Song</th>
                                 <th className="song-row__item">Artist</th>
                                 <th className="song-row__item">Genre</th>
                                 <th className="song-row__item">Rating</th>
+                                <th className="song-row__item" style={{ width: "10%" }}>Remove </th>
                             </tr>
                         </tbody>
                     </table>
                     <SongList
                         songs={this.state.songs}
                         handleClick={this.handleClick}
+                        handleClickDelete={this.handleClickDelete}
                     />
                 </div>
                 <div>
