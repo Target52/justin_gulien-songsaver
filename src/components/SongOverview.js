@@ -2,6 +2,8 @@ import React, { Component } from "react"
 import SongList from "./SongList"
 import SongForm from "./SongForm"
 import YoutubeEmbed from "./YoutubeEmbed";
+import InputFilter from "./InputFilter";
+import sorticon from '../img/sort.png'
 
 class SongOverview extends Component {
 
@@ -9,39 +11,20 @@ class SongOverview extends Component {
         super()
         this.state =
         {
+            filter:
+            {
+                genre: '',
+                rating: ''
+            },
             sort:
             {
                 column: 'title',
-                order: 'asc'
+                order: true
             },
             embedId: '',
             songs: [
                 {
                     id: 1,
-                    title: "Karma Police",
-                    artist: "Radiohead",
-                    genre: "Rock",
-                    link: "1uYWYWPc9HU",
-                    rating: 2
-                },
-                {
-                    id: 2,
-                    title: "Upper West Side",
-                    artist: "King Princess",
-                    genre: "Indie Pop",
-                    link: "62fsOE7rZx8",
-                    rating: 4
-                },
-                {
-                    id: 3,
-                    title: "Shark Smile",
-                    artist: "Big Thief",
-                    genre: "Indie Pop",
-                    link: "w1QlOfYxykI",
-                    rating: 1
-                },
-                {
-                    id: 4,
                     title: "Gypsy",
                     artist: "Fleetwood Mac",
                     genre: "Pop",
@@ -49,7 +32,7 @@ class SongOverview extends Component {
                     rating: 4
                 },
                 {
-                    id: 5,
+                    id: 2,
                     title: "Half Moon",
                     artist: "Blind Pilot",
                     genre: "Pop",
@@ -57,12 +40,36 @@ class SongOverview extends Component {
                     rating: 2
                 },
                 {
-                    id: 6,
+                    id: 3,
+                    title: "Karma Police",
+                    artist: "Radiohead",
+                    genre: "Rock",
+                    link: "1uYWYWPc9HU",
+                    rating: 2
+                },
+                {
+                    id: 4,
+                    title: "Shark Smile",
+                    artist: "Big Thief",
+                    genre: "Indie Pop",
+                    link: "w1QlOfYxykI",
+                    rating: 1
+                },
+                {
+                    id: 5,
                     title: "Southern Nights",
                     artist: "Whitney",
                     genre: "Pop",
                     link: "e7fy8nwiTNw",
                     rating: 3
+                },
+                {
+                    id: 6,
+                    title: "Upper West Side",
+                    artist: "King Princess",
+                    genre: "Indie Pop",
+                    link: "62fsOE7rZx8",
+                    rating: 4
                 }
             ],
             inputSong:
@@ -77,12 +84,20 @@ class SongOverview extends Component {
 
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleChangeFilter = this.handleChangeFilter.bind(this)
     }
 
     handleChange(event) {
         const { name, value } = event.target
         this.setState(prevState => ({
             inputSong: { ...prevState.inputSong, [name]: value }
+        }))
+    }
+
+    handleChangeFilter = (event) => {
+        const { name, value } = event.target
+        this.setState(prevState => ({
+            filter: { ...prevState.filter, [name]: value }
         }))
     }
 
@@ -99,6 +114,66 @@ class SongOverview extends Component {
         this.setState({
             songs: newData
         })
+    }
+
+    handleClickSort = (event) => {
+        let sortSongs = (data, byKey, order) => {
+            let sortedData;
+            if (byKey === "rating") {
+                if (order) {
+                    sortedData = data.sort(function (a, b) {
+                        return a.rating - b.rating
+                    })
+                } else {
+                    sortedData = data.sort(function (a, b) {
+                        return b.rating - a.rating
+                    })
+                }
+                return sortedData;
+            } else {
+                let x
+                let y
+                sortedData = data.sort(function (a, b) {
+                    switch (byKey) {
+                        case "artist":
+                            x = a.artist.toLowerCase();
+                            y = b.artist.toLowerCase();
+                            break;
+                        case "genre":
+                            x = a.genre.toLowerCase();
+                            y = b.genre.toLowerCase();
+                            break;
+                        default:
+                            x = a.title.toLowerCase();
+                            y = b.title.toLowerCase();
+                            break;
+                    }
+                    if (order) {
+                        if (x > y) { return 1; }
+                        if (x < y) { return -1; }
+                        return 0;
+                    } else {
+                        if (x > y) { return -1; }
+                        if (x < y) { return 1; }
+                        return 0;
+                    }
+                })
+                return sortedData;
+            }
+        }
+
+        let value = event.currentTarget.getAttribute("value")
+        if (value === this.state.sort.column) {
+            sortSongs(this.state.songs, value, !this.state.sort.order)
+            this.setState(prevState => ({
+                sort: { column: prevState.sort.column, order: !prevState.sort.order }
+            }))
+        } else {
+            sortSongs(this.state.songs, value, true)
+            this.setState({
+                sort: { column: value, order: true }
+            })
+        }
     }
 
     componentDidMount() {
@@ -145,7 +220,7 @@ class SongOverview extends Component {
 
     render() {
         return (
-            <div className="main">
+            <div className="main" >
                 <SongForm
                     handleChange={this.handleChange}
                     inputSong={this.state.inputSong}
@@ -155,11 +230,11 @@ class SongOverview extends Component {
                     <table className="table1" style={{ width: "100%" }}>
                         <tbody>
                             <tr className="song-header">
-                                <th className="song-row__item">Song</th>
-                                <th className="song-row__item">Artist</th>
-                                <th className="song-row__item">Genre</th>
-                                <th className="song-row__item">Rating</th>
-                                <th className="song-row__item" style={{ width: "10%" }}>Remove </th>
+                                <th onClick={this.handleClickSort} value="title" className="song-row__item">Song<img src={sorticon} alt="trashcan" className="sorticon" /></th>
+                                <th onClick={this.handleClickSort} value="artist" className="song-row__item">Artist<img src={sorticon} alt="trashcan" className="sorticon" /></th>
+                                <th onClick={this.handleClickSort} value="genre" className="song-row__item">Genre<img src={sorticon} alt="trashcan" className="sorticon" /></th>
+                                <th onClick={this.handleClickSort} value="rating" className="song-row__item">Rating<img src={sorticon} alt="trashcan" className="sorticon" /></th>
+                                <th onClick={this.handleClickSort} className="song-row__item" style={{ width: "10%" }}>Remove </th>
                             </tr>
                         </tbody>
                     </table>
@@ -167,6 +242,14 @@ class SongOverview extends Component {
                         songs={this.state.songs}
                         handleClick={this.handleClick}
                         handleClickDelete={this.handleClickDelete}
+                        filter={this.state.filter}
+                    />
+                </div>
+                <div>
+                    <InputFilter
+                        songs={this.state.songs}
+                        handleChangeFilter={this.handleChangeFilter}
+                        filter={this.state.filter}
                     />
                 </div>
                 <div>

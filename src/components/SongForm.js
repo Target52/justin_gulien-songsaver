@@ -5,7 +5,6 @@ function SongForm(props) {
 
     return (
         <div className="songForm">
-
             <InputField
                 handleSubmit={props.handleSubmit}
                 handleChange={props.handleChange}
