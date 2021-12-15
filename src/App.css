@@ -1,38 +1,108 @@
 .App {
   text-align: center;
+  width: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.main {
+  width: 99%;
+  display: inline-block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.songBody {
+  width: 95%;
+  display: inline-block;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.table2 {
+  width: 100%;
+}
+
+th, td {
+  width: 20%;
+}
+
+.song-title {
+  cursor: pointer;
+  color: blue;
+}
+
+.songForm {
+  background-color: cadetblue;
+  height: 60px;
+  line-height: 60px;
+  margin-bottom: 20px;
+}
+
+input, select {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+input:first-of-type {
+  margin-left: 20px;
+}
+
+button {
+  margin-left: 0px;
+  margin-right: 0px;
+  height: 40px;
+  color: white;
+  background-color: darkslategrey;
+}
+
+.field {
+  width: 90%;
+}
+
+.songBody {
+  background-color: darkslategrey;
+  color: white;
+  border: 0px;
+}
+
+.song-row {
+  background-color: cadetblue;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.video-responsive {
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+  height: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.video-responsive iframe {
+  margin-top: 50px;
+  left: 20%;
+  top: 0;
+  height: 60%;
+  width: 60%;
+  position: absolute;
+}
+
+.trashcan {
+  height: 25px;
+  margin-right:0px;
+}
+
+.star {
+  height: 25px;
+  margin-right:0px;
+  background-color: cadetblue;
+}
+
+.sorticon {
+  height: 15px;
+  margin-right:0px;
+  vertical-align: center;
+}
+
+th img { 
+  vertical-align: middle;
 }
